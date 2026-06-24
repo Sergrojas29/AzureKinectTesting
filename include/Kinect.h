@@ -30,5 +30,7 @@ public:
     // A method to poll the camera and return coordinates
     // Using std::optional in case no body is detected on this specific frame
     std::optional<k4abt_body_t> getBodyPosition();
+
+    bool tPoseChecker(const k4abt_body_t& body);
 };
 

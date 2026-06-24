@@ -89,3 +89,32 @@ std::optional<k4abt_body_t> Kinect::getBodyPosition() {
 
     return std::nullopt;
 }
+
+
+bool Kinect::tPoseChecker(const k4abt_body_t& body){
+
+    float left_shoulder_y = body.skeleton.joints[K4ABT_JOINT_SHOULDER_LEFT].position.v[1];
+    float left_elbow_y = body.skeleton.joints[K4ABT_JOINT_ELBOW_LEFT].position.v[1]; 
+    float left_hand_y = body.skeleton.joints[K4ABT_JOINT_HAND_LEFT].position.v[1]; 
+
+    // float right_shoulder_y = body.skeleton.joints[K4ABT_JOINT_SHOULDER_RIGHT].position.v[1];
+    // float right_elbow_y = body.skeleton.joints[K4ABT_JOINT_ELBOW_RIGHT].position.v[1]; 
+    // float right_hand_y = body.skeleton.joints[K4ABT_JOINT_HAND_RIGHT].position.v[1]; 
+
+
+    float tolerance = 50.0f;
+
+    // float left_accptance_high = left_shoulder_y + tolerance;
+    // float left_accptance_low = left_shoulder_y - tolerance;
+
+    // if (left_elbow_y >= left_accptance_low && left_elbow_y <= left_accptance_high){
+    //     return true;
+    // }
+
+    std::println( " Left_should_y = ${} ___left_elbow_y = {} ___ left_hand_y = {}", left_shoulder_y, left_elbow_y, left_hand_y);
+
+    
+
+
+    return false;
+}
