@@ -104,12 +104,15 @@ bool Kinect::tPoseChecker(const k4abt_body_t& body){
 
     float tolerance = 50.0f;
 
-    // float left_accptance_high = left_shoulder_y + tolerance;
-    // float left_accptance_low = left_shoulder_y - tolerance;
 
-    // if (left_elbow_y >= left_accptance_low && left_elbow_y <= left_accptance_high){
-    //     return true;
-    // }
+    float left_accptance_high = left_shoulder_y - tolerance;
+    float left_accptance_low = left_shoulder_y + tolerance;
+
+    // if left elbow is -578 is that <= -550 _ true and -578 >= -650
+    if (left_elbow_y <= left_accptance_low && left_elbow_y >= left_accptance_high 
+        && left_hand_y <= left_accptance_low && left_hand_y >= left_accptance_high){
+        return true;
+    }
 
     std::println( " Left_should_y = ${} ___left_elbow_y = {} ___ left_hand_y = {}", left_shoulder_y, left_elbow_y, left_hand_y);
 

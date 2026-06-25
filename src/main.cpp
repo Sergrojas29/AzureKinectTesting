@@ -12,8 +12,8 @@ int main() {
         std::this_thread::sleep_for(std::chrono::seconds(2));
         std::println("Initialization complete. Step in front of the camera!");
 
-
-        while (true) {
+        int check = 0;
+        while (check < 30) {
             // Poll the camera for the latest head position
             auto body = K4aDevice.getBodyPosition();
 
@@ -43,7 +43,14 @@ int main() {
                 //     // std::println("Head Coordinates -> X: {:.2f}mm, Y: {:.2f}mm, Z: {:.2f}mm", x, y, z);
                 // }
 
-                K4aDevice.tPoseChecker(detected_body);
+                bool is_tpose = K4aDevice.tPoseChecker(detected_body);
+                if(is_tpose){
+                    std::println("tpose is checked and added");
+                    check++;
+                }else{
+                    check = 0;
+                }
+
 
             }
 
