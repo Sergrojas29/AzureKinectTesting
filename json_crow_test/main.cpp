@@ -12,7 +12,6 @@ struct JointInfo
     std::vector<float>position = std::vector<float>(3);
 
     void reset(){    
-        // std::fill(position.begin(), position.end(), 0.0f);
         position.assign(3, 0.0f);
     }
 
@@ -65,13 +64,10 @@ void WriteToFile(const crow::json::wvalue& data){
 }
 
 int main() {
-    // 1. Create a "write value" JSON object using Crow's built-in type
-    
-    // std::vector<crow::json::wvalue> joints;
 
     std::unique_ptr<PoseJson> PoseData = std::make_unique<PoseJson>();
 
-    std::vector<std::string> jointNames = {
+    std::array<std::string, 32> jointNames = {
         "K4ABT_JOINT_PELVIS",
         "K4ABT_JOINT_SPINE_NAVEL",
         "K4ABT_JOINT_SPINE_CHEST",

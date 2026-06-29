@@ -4,7 +4,8 @@
 #include <k4abt.h>
 #include <memory>
 #include <optional>
- 
+#include <print>
+#include <stdexcept>
 
 using unique_device = std::unique_ptr<_k4a_device_t, K4aDeviceDeleter>;
 using unique_tracker = std::unique_ptr<_k4abt_tracker_t, K4aTrackerDeleter>;
@@ -33,7 +34,7 @@ public:
 
     bool tPoseChecker(const k4abt_body_t& body);
 
-    
+
 
 };
 

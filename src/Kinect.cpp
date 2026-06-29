@@ -1,6 +1,5 @@
 #include "Kinect.h"
-#include <print>
-#include <stdexcept>
+
 
 Kinect::Kinect(){
     // Open the physical device
