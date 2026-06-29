@@ -32,5 +32,8 @@ public:
     std::optional<k4abt_body_t> getBodyPosition();
 
     bool tPoseChecker(const k4abt_body_t& body);
+
+    
+
 };
 
