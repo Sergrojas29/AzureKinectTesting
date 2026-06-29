@@ -1,0 +1,296 @@
+{
+  "joints": [
+    {
+      "id": 0,
+      "name": "K4ABT_JOINT_PELVIS",
+      "position": [
+        0,
+        900,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "name": "K4ABT_JOINT_SPINE_NAVEL",
+      "position": [
+        0,
+        1100,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "name": "K4ABT_JOINT_SPINE_CHEST",
+      "position": [
+        0,
+        1300,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "name": "K4ABT_JOINT_NECK",
+      "position": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "name": "K4ABT_JOINT_CLAVICLE_LEFT",
+      "position": [
+        -50,
+        1400,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "name": "K4ABT_JOINT_SHOULDER_LEFT",
+      "position": [
+        -150,
+        1400,
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "name": "K4ABT_JOINT_ELBOW_LEFT",
+      "position": [
+        -400,
+        1400,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "name": "K4ABT_JOINT_WRIST_LEFT",
+      "position": [
+        -650,
+        1400,
+        0
+      ]
+    },
+    {
+      "id": 8,
+      "name": "K4ABT_JOINT_HAND_LEFT",
+      "position": [
+        -700,
+        1400,
+        0
+      ]
+    },
+    {
+      "id": 9,
+      "name": "K4ABT_JOINT_HANDTIP_LEFT",
+      "position": [
+        -750,
+        1400,
+        0
+      ]
+    },
+    {
+      "id": 10,
+      "name": "K4ABT_JOINT_THUMB_LEFT",
+      "position": [
+        -680,
+        1450,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "name": "K4ABT_JOINT_CLAVICLE_RIGHT",
+      "position": [
+        50,
+        1400,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "name": "K4ABT_JOINT_SHOULDER_RIGHT",
+      "position": [
+        150,
+        1400,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "name": "K4ABT_JOINT_ELBOW_RIGHT",
+      "position": [
+        400,
+        1400,
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "name": "K4ABT_JOINT_WRIST_RIGHT",
+      "position": [
+        650,
+        1400,
+        0
+      ]
+    },
+    {
+      "id": 15,
+      "name": "K4ABT_JOINT_HAND_RIGHT",
+      "position": [
+        700,
+        1400,
+        0
+      ]
+    },
+    {
+      "id": 16,
+      "name": "K4ABT_JOINT_HANDTIP_RIGHT",
+      "position": [
+        750,
+        1400,
+        0
+      ]
+    },
+    {
+      "id": 17,
+      "name": "K4ABT_JOINT_THUMB_RIGHT",
+      "position": [
+        680,
+        1450,
+        0
+      ]
+    },
+    {
+      "id": 18,
+      "name": "K4ABT_JOINT_HIP_LEFT",
+      "position": [
+        -100,
+        850,
+        0
+      ]
+    },
+    {
+      "id": 19,
+      "name": "K4ABT_JOINT_KNEE_LEFT",
+      "position": [
+        -100,
+        450,
+        0
+      ]
+    },
+    {
+      "id": 20,
+      "name": "K4ABT_JOINT_ANKLE_LEFT",
+      "position": [
+        -100,
+        50,
+        0
+      ]
+    },
+    {
+      "id": 21,
+      "name": "K4ABT_JOINT_FOOT_LEFT",
+      "position": [
+        -100,
+        0,
+        150
+      ]
+    },
+    {
+      "id": 22,
+      "name": "K4ABT_JOINT_HIP_RIGHT",
+      "position": [
+        100,
+        850,
+        0
+      ]
+    },
+    {
+      "id": 23,
+      "name": "K4ABT_JOINT_KNEE_RIGHT",
+      "position": [
+        100,
+        450,
+        0
+      ]
+    },
+    {
+      "id": 24,
+      "name": "K4ABT_JOINT_ANKLE_RIGHT",
+      "position": [
+        100,
+        50,
+        0
+      ]
+    },
+    {
+      "id": 25,
+      "name": "K4ABT_JOINT_FOOT_RIGHT",
+      "position": [
+        100,
+        0,
+        150
+      ]
+    },
+    {
+      "id": 26,
+      "name": "K4ABT_JOINT_HEAD",
+      "position": [
+        0,
+        1600,
+        0
+      ]
+    },
+    {
+      "id": 27,
+      "name": "K4ABT_JOINT_NOSE",
+      "position": [
+        0,
+        1600,
+        100
+      ]
+    },
+    {
+      "id": 28,
+      "name": "K4ABT_JOINT_EYE_LEFT",
+      "position": [
+        -30,
+        1650,
+        80
+      ]
+    },
+    {
+      "id": 29,
+      "name": "K4ABT_JOINT_EAR_LEFT",
+      "position": [
+        -80,
+        1600,
+        0
+      ]
+    },
+    {
+      "id": 30,
+      "name": "K4ABT_JOINT_EYE_RIGHT",
+      "position": [
+        30,
+        1650,
+        80
+      ]
+    },
+    {
+      "id": 31,
+      "name": "K4ABT_JOINT_EAR_RIGHT",
+      "position": [
+        80,
+        1600,
+        0
+      ]
+    }
+  ],
+  "trackedAngles": [],
+  "trackedDistances": []
+}
+
+
