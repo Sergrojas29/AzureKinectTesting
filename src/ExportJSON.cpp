@@ -1,21 +1,7 @@
 #include "ExportJSON.h"
 
-
-void ExportJSON::WriteToFile(const crow::json::wvalue& data){
-
-    std::ofstream outFile("data.json");
-    if (outFile.is_open()) {
-        outFile << data.dump(2) << std::endl;
-        outFile.close();
-        std::cout << "Successfully wrote clean JSON using Crow!" << std::endl;
-    } else {
-        std::cerr << "Failed to open data.json for writing." << std::endl;
-    }
-}
-
-
-void ExportJSON::getOneFrame(const k4abt_skeleton_t& skeleton){
-
+ExportJSON::ExportJSON()
+{
     std::array<std::string, 32> jointNames = {
         "K4ABT_JOINT_PELVIS",
         "K4ABT_JOINT_SPINE_NAVEL",
@@ -49,19 +35,39 @@ void ExportJSON::getOneFrame(const k4abt_skeleton_t& skeleton){
         "K4ABT_JOINT_EAR_LEFT",
         "K4ABT_JOINT_EYE_RIGHT",
         "K4ABT_JOINT_EAR_RIGHT"};
-    
-    std::unique_ptr<PoseJson> PoseData = std::make_unique<PoseJson>();
 
-    for (int i = 0; i < K4ABT_JOINT_COUNT; ++i) {
-        PoseData->joints[i].id = i;
-        PoseData->joints[i].name = jointNames[i];
-
-        
-        PoseData->joints[i].position[0] = skeleton.joints[i].position.v[0];
-        PoseData->joints[i].position[1] = skeleton.joints[i].position.v[1];
-        PoseData->joints[i].position[2] = skeleton.joints[i].position.v[2];
+    for (int i = 0; i < K4ABT_JOINT_COUNT; ++i)
+    {
+        PoseData.joints[i].id = i;
+        PoseData.joints[i].name = jointNames[i];
     }
+}
 
-    crow::json::wvalue data = PoseData->toJson();
-    WriteToFile(data);
+void ExportJSON::WriteToFile(std::string filename)
+{
+
+
+
+    std::ofstream outFile(filename);
+    if (outFile.is_open())
+    {
+        outFile << PoseData.toJson().dump(2) << std::endl;
+        outFile.close();
+        std::cout << "Successfully wrote file: " << filename << std::endl;
+    }
+    else
+    {
+        std::cerr << "Failed to open data.json for writing." << std::endl;
+    }
+}
+
+void ExportJSON::setOneFrame(const k4abt_skeleton_t &skeleton)
+{
+    for (int i = 0; i < K4ABT_JOINT_COUNT; ++i)
+    {
+        PoseData.joints[i].position[0] = skeleton.joints[i].position.v[0];
+        PoseData.joints[i].position[1] = skeleton.joints[i].position.v[1];
+        PoseData.joints[i].position[2] = skeleton.joints[i].position.v[2];
+    }
+    crow::json::wvalue data = PoseData.toJson();
 }

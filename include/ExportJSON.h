@@ -3,6 +3,7 @@
 #include "crow.h"
 #include <fstream>
 #include <vector>
+#include <array>
 #include <string>
 #include <memory>
 #include <k4a/k4a.h>
@@ -10,13 +11,13 @@
 
 struct JointInfo
 {
-    char id;
+    int id;
     std::string name;
-    std::vector<float> position = std::vector<float>(3);
+    std::array<float, 3> position;
 
     void reset()
     {
-        position.assign(3, 0.0f);
+        position.fill(0.0f);
     }
 
     crow::json::wvalue toJson() const
@@ -24,7 +25,7 @@ struct JointInfo
         crow::json::wvalue node;
         node["id"] = id;
         node["name"] = name;
-        node["position"] = position;
+        node["position"] = crow::json::wvalue::list({position[0], position[1], position[2]});;
 
         return node;
     }
@@ -32,9 +33,9 @@ struct JointInfo
 
 struct PoseJson
 {
-    std::vector<JointInfo> joints = std::vector<JointInfo>(32);
+    std::array<JointInfo, 32> joints;
 
-    void rest()
+    void reset()
     {
         for (auto &&node : joints)
         {
@@ -62,12 +63,18 @@ struct PoseJson
 class ExportJSON
 {
 public:
-    ExportJSON() = delete;
-
-    static void getOneFrame(const k4abt_skeleton_t& skeleton);
+    PoseJson PoseData;
     
-    static void WriteToFile(const crow::json::wvalue &data);
+    ExportJSON();
+
+    void setOneFrame(const k4abt_skeleton_t& skeleton);
+    
+    void WriteToFile(std::string filename);
 
 private:
     
 };
+
+
+
+
