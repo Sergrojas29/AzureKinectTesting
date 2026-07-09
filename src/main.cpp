@@ -1,56 +1,50 @@
 #include "Kinect.h"
 #include "ExportJSON.h"
+#include "PoseChecker.h"
 #include <print>
 #include <chrono>
 #include <thread>
 #include <exception>
 #include <cmath>
-#include <numeric>
-#include <numbers> // For std::numbers::pi
-#include <algorithm> 
+#include <algorithm>
+#include <csignal> // For OS signals
+#include <atomic>  // For thread-safe booleans
+#include <iostream>
 
-template <typename T>
-T square(T x)
+// 1. Create a global thread-safe flag
+std::atomic<bool> keep_running{true};
+std::atomic<bool> Trigger_Pose_Capture{false};
+std::atomic<bool> Check_for_Pose{false};
+
+void keyboard_listner()
 {
-    return x * x;
-}
-
-float get_Rad_3D(const k4a_float3_t &pointA, const k4a_float3_t &pointB, const k4a_float3_t vertex)
-{
-    // Vector from vertex to pointA (VA)
-    k4a_float3_t vectorVA = {
-        vertex.xyz.x - pointA.xyz.x,
-        vertex.xyz.y - pointA.xyz.y,
-        vertex.xyz.z - pointA.xyz.z
-    };
-
-    // Vector from vertex to pointB (VB)
-    k4a_float3_t vectorVB = {
-        vertex.xyz.x - pointB.xyz.x,
-        vertex.xyz.y - pointB.xyz.y,
-        vertex.xyz.z - pointB.xyz.z
-    };
-
-    // Dot product of VA and VB
-    float dot_product = (vectorVA.xyz.x * vectorVB.xyz.x) +
-                        (vectorVA.xyz.y * vectorVB.xyz.y) +
-                        (vectorVA.xyz.z * vectorVB.xyz.z);
-
-    // Magnitudes of VA and VB
-    float magnitudeVA = std::sqrt(square(vectorVA.xyz.x) + square(vectorVA.xyz.y) + square(vectorVA.xyz.z));
-    float magnitudeVB = std::sqrt(square(vectorVB.xyz.x) + square(vectorVB.xyz.y) + square(vectorVB.xyz.z));
-
-    // Avoid division by zero
-    if (magnitudeVA == 0.0f || magnitudeVB == 0.0f) return 0.0f;
-
-    // Calculate cosine of the angle and clamp to avoid floating point errors outside [-1, 1]
-    float cosTheta = std::clamp(dot_product / (magnitudeVA * magnitudeVB), -1.0f, 1.0f);
-
-    return std::acos(cosTheta); // Angle in radians
+    char input;
+    while (keep_running)
+    {
+        std::cin >> input;
+        if (input == 'q')
+        {
+            Trigger_Pose_Capture = true;
+        }
+        if (input == 'e')
+        {
+            Check_for_Pose = true;
+        }
+        if (input == 'x')
+        {
+            keep_running = false;
+        }
+    }
 }
 
 int main()
 {
+    std::thread input_thread(keyboard_listner);
+
+    std::println("Kinect starting...");
+    std::println("Type 'q' and press Enter to trigger a pose capture.");
+    std::println("Type 'e' and press Enter to Enter Pose Checker and Again to Exit.");
+    std::println("Type 'x' and press Enter to quit Application.");
 
     try
     {
@@ -58,12 +52,11 @@ int main()
         std::this_thread::sleep_for(std::chrono::seconds(5));
         std::println("Initialization complete. Step in front of the camera!");
 
-        // ExportJSON JsonExporter;
-        // int poseCaputer = 0;
+        // For Export To Json and Counter
+        ExportJSON JsonExporter;
+        int poseCaputer = 0;
 
-        int timer = 0;
-
-        while (true)
+        while (keep_running)
         {
             // Poll the camera for the latest head position
             auto body = K4aDevice.getBodyPosition();
@@ -73,28 +66,38 @@ int main()
             {
 
                 const auto &detected_body = body.value();
-                // JsonExporter.setOneFrame(detected_body.skeleton);
-                // JsonExporter.WriteToFile("CapPose_"+ std::to_string(poseCaputer)+".json");
-                // poseCaputer++;
 
-                const auto &skeleton = detected_body.skeleton.joints;
-
-                float rightLegAngle = get_Rad_3D(skeleton[K4ABT_JOINT_HIP_RIGHT].position, skeleton[K4ABT_JOINT_ANKLE_RIGHT].position, skeleton[K4ABT_JOINT_KNEE_RIGHT].position);
-                float leftArmAngle = get_Rad_3D(skeleton[K4ABT_JOINT_SHOULDER_LEFT].position, skeleton[K4ABT_JOINT_WRIST_LEFT].position, skeleton[K4ABT_JOINT_ELBOW_LEFT].position);
-                float rightArmAngle = get_Rad_3D(skeleton[K4ABT_JOINT_SHOULDER_RIGHT].position, skeleton[K4ABT_JOINT_WRIST_RIGHT].position, skeleton[K4ABT_JOINT_ELBOW_RIGHT].position);
-
-                float tolerance = .20f; // Radians
-
-                if (std::abs(rightLegAngle - 2.26f) < tolerance &&
-                    std::abs(leftArmAngle - 0.87f) < tolerance &&
-                    std::abs(rightArmAngle - 0.87f) < tolerance
-            )
+                if (Trigger_Pose_Capture)
                 {
-                    std::cout << "Value is within range." << std::endl;
-                    return 1;
+                    JsonExporter.setOneFrame(detected_body.skeleton);
+                    JsonExporter.WriteToFile("CapPose_" + std::to_string(poseCaputer) + ".json");
+                    poseCaputer++;
+                    std::println("POSE TAKEN ______________________________________________");
+                    Trigger_Pose_Capture = false;
                 }
 
-                timer++;
+                if (Check_for_Pose)
+                {
+
+                    if (PoseChecker::check(PoseState::POSE_MORGAN, detected_body.skeleton))
+                    {
+                        std::println("Morgan Pose");
+                    }
+
+                    if (PoseChecker::check(PoseState::POSE_EMPOWERED, detected_body.skeleton))
+                    {
+                        std::println("Empowered Pose");
+                    }
+                    if (PoseChecker::check(PoseState::POSE_CUTE_STANDING, detected_body.skeleton))
+                    {
+                        std::println("Cute Pose");
+                    }
+                    if (PoseChecker::check(PoseState::POSE_LEAN_LEFT, detected_body.skeleton))
+                    {
+                        std::println("Lean Left Pose");
+                    }
+                }
+
             }
 
             // Sleep for ~33ms to run the loop at roughly 30 Frames Per Second (FPS).
@@ -102,13 +105,7 @@ int main()
             std::this_thread::sleep_for(std::chrono::milliseconds(33));
 
             // Pause for recalabration
-            //  std::this_thread::sleep_for(std::chrono::seconds(10));
-
-            // std::println("Reset pose");
-            // std::println("Stand up start");
-            // std::println("Lift up right Heel");
-            // std::println("Hands to ribs");
-            // std::println("Slightly lean ");
+            // std::this_thread::sleep_for(std::chrono::seconds(10));
         }
     }
     catch (const std::runtime_error &e)

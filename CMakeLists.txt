@@ -26,6 +26,7 @@ add_executable(kinect_app
     src/main.cpp 
     src/Kinect.cpp
     src/ExportJSON.cpp
+    src/PoseChecker.cpp
 )
 
 # Link the Azure Kinect library to your executable
